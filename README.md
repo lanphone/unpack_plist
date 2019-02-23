@@ -1,2 +1,2 @@
-# unpack_plist
-unpack plist
+# unpack_texturepacker
+unpack_texturepacker
