@@ -9,11 +9,11 @@
     "url": "https://github.com/lanphone/unpack_tp.git"
   },
   "scripts": {
-    "test":"node ./test/test.js"
+    "test": "node ./test/test.js"
   },
   "main": "./out/index.js",
   "bin": {
-    "un": "./bin/index.js"
+    "unp": "./bin/index.js"
   },
   "dependencies": {
     "images": "^3.0.2",
