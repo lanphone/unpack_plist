@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/lanphone/unpack_tp.git"
   },
+  "scripts": {
+    "test":"node ./test/test.js"
+  },
   "main": "./out/main.js",
   "bin": {
     "un": "./bin/index.js"
