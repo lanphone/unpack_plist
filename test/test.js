@@ -1,3 +1,3 @@
-var Main = require("../out/main").Main;
+var Unpacker = require("../out/unpacker").Unpacker;
 var path = require('path');
-new Main(path.resolve("test", "ui"), "cc");
+new Unpacker(path.resolve("test", "ui"), "cc");

@@ -5,7 +5,7 @@ import { IPackData as IPackData, ITrimData, IParser } from './core/IParser';
 import { ParserFactory } from './core/ParserFactory';
 import { parserCfg } from './config/parserCfg';
 
-export class Main {
+export class Unpacker {
 
     constructor(filename: string, packType: string) {
         if (fs.statSync(filename).isDirectory())
@@ -71,19 +71,4 @@ export class Main {
         }
         console.log(`ok!! unpack:${atlasPath}`);
     }
-}
-
-export function unpack() {
-    let argv = process.argv.slice(2);
-    if (argv.length < 2) {
-        help();
-        return;
-    }
-    new Main(argv[0], argv[1]);
-}
-
-function help() {
-    console.log(`you have to provide 2 arguments, the first arg is director or file,
-    and the second arg is packType.\ncommand like:\nun dir cc \nun file.plist cc`)
-
 }

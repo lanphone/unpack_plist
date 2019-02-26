@@ -11,7 +11,7 @@
   "scripts": {
     "test":"node ./test/test.js"
   },
-  "main": "./out/main.js",
+  "main": "./out/index.js",
   "bin": {
     "un": "./bin/index.js"
   },

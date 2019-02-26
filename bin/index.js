@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('../out/main.js').unpack();
+require('../out/index.js');

@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const ParserFactory_1 = require("./core/ParserFactory");
 const parserCfg_1 = require("./config/parserCfg");
-class Main {
+class Unpacker {
     constructor(filename, packType) {
         if (fs.statSync(filename).isDirectory())
             this.parseDir(filename, packType);
@@ -18,17 +18,18 @@ class Main {
         fs.readdir(dir, (err, files) => {
             if (err) {
                 console.error(err);
-                return;
             }
-            files.forEach((filename) => {
-                let filePath = path.join(dir, filename);
-                if (filename.match(ext)) {
-                    this.parseFile(filePath, parser);
-                }
-                else if (fs.statSync(filePath).isDirectory()) {
-                    this.parseDir(filePath, packType);
-                }
-            });
+            else {
+                files.forEach((filename) => {
+                    let filePath = path.join(dir, filename);
+                    if (filename.match(ext)) {
+                        this.parseFile(filePath, parser);
+                    }
+                    else if (fs.statSync(filePath).isDirectory()) {
+                        this.parseDir(filePath, packType);
+                    }
+                });
+            }
         });
     }
     parseFile(filePath, parserTypeOrIParser) {
@@ -64,18 +65,5 @@ class Main {
         console.log(`ok!! unpack:${atlasPath}`);
     }
 }
-exports.Main = Main;
-function unpack() {
-    let argv = process.argv.slice(2);
-    if (argv.length < 2) {
-        help();
-        return;
-    }
-    new Main(argv[0], argv[1]);
-}
-exports.unpack = unpack;
-function help() {
-    console.log(`you have to provide 2 arguments, the first arg is director or file,
-    and the second arg is packType.\ncommand like:\nun dir cc \nun file.plist cc`);
-}
-//# sourceMappingURL=main.js.map
+exports.Unpacker = Unpacker;
+//# sourceMappingURL=Unpacker.js.map
