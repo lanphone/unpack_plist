@@ -38,7 +38,7 @@ class Unpacker {
             parser = ParserFactory_1.ParserFactory.getParser(parserTypeOrIParser);
         else
             parser = parserTypeOrIParser;
-        parser.parse(filePath, this.trim);
+        parser.parse(filePath, (err, packData) => !err && packData && this.trim(packData));
     }
     trim(packData) {
         let atlasPath = packData.atlasPath;

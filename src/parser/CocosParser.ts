@@ -5,11 +5,12 @@ import fs = require('fs');
 
 export class CocosParser implements IParser {
 
-    parse(plistFile: string, callback: (plistData: IPackData) => void) {
+    parse(plistFile: string, callback: (err: Error, plistData: IPackData) => void) {
         fs.readFile(plistFile, "utf-8", (err, data) => {
             if (err) {
                 console.error(err);
                 console.error(`targetFile:${plistFile}`);
+                callback.call(this, err, null);
                 return;
             }
             let plistData: IPackData = { atlasPath: "", trimDatas: [] };
@@ -20,6 +21,7 @@ export class CocosParser implements IParser {
                 if (err) {
                     console.error(err);
                     console.error(`targetFile:${plistFile}`);
+                    callback.call(this, err, null);
                     return;
                 }
                 let content = json.plist.dict.dict[0];
@@ -65,7 +67,7 @@ export class CocosParser implements IParser {
                         item.frame[2] = item.frame[2] ^ item.frame[3];
                     }
                 }
-                callback.call(this, plistData);
+                callback.call(this, null, plistData);
             });
         })
     }

@@ -9,6 +9,7 @@ class CocosParser {
             if (err) {
                 console.error(err);
                 console.error(`targetFile:${plistFile}`);
+                callback.call(this, err, null);
                 return;
             }
             let plistData = { atlasPath: "", trimDatas: [] };
@@ -18,6 +19,7 @@ class CocosParser {
                 if (err) {
                     console.error(err);
                     console.error(`targetFile:${plistFile}`);
+                    callback.call(this, err, null);
                     return;
                 }
                 let content = json.plist.dict.dict[0];
@@ -63,7 +65,7 @@ class CocosParser {
                         item.frame[2] = item.frame[2] ^ item.frame[3];
                     }
                 }
-                callback.call(this, plistData);
+                callback.call(this, null, plistData);
             });
         });
     }

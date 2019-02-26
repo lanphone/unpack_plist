@@ -1,5 +1,5 @@
 export interface IParser {
-    parse(plistFile: string, callback: (packData: IPackData) => void),
+    parse(plistFile: string, callback: (err:Error, packData: IPackData) => void),
 }
 
 export interface ITrimData {

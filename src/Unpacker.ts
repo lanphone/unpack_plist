@@ -41,7 +41,8 @@ export class Unpacker {
         else
             parser = parserTypeOrIParser;
 
-        parser.parse(filePath, this.trim);
+        parser.parse(filePath, (err: Error, packData: IPackData) => !err && packData && this.trim(packData));
+
     }
 
 
