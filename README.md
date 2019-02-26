@@ -9,3 +9,5 @@ un 目录或数据文件 文件生成类型（比如cocos就是cc）
 un dir(file) type
 
 实现IParser接口可增加相应的类型
+
+注：需要用vendor下的binding.node替换node-module/images/vendor下的binding.node，才能裁剪图片
