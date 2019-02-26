@@ -6,27 +6,18 @@ const path = require("path");
 const ParserFactory_1 = require("./core/ParserFactory");
 const parserCfg_1 = require("./config/parserCfg");
 class Main {
-    constructor(filename, packType) {
-        if (fs.statSync(filename).isDirectory())
-            this.parseDir(filename, packType);
-        else
-            this.parseFile(filename, packType);
+    constructor(a, b) {
+        this.parseDir(a, b);
     }
-    parseDir(dir, packType) {
-        let { ext } = parserCfg_1.parserCfg[packType];
-        let parser = ParserFactory_1.ParserFactory.getParser(packType);
+    parseDir(dir, parserType) {
+        let { ext } = parserCfg_1.parserCfg[parserType];
+        let parser = ParserFactory_1.ParserFactory.getParser(parserType);
         fs.readdir(dir, (err, files) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
+            if (err)
+                throw err;
             files.forEach((filename) => {
-                let filePath = path.join(dir, filename);
                 if (filename.match(ext)) {
-                    this.parseFile(filePath, parser);
-                }
-                else if (fs.statSync(filePath).isDirectory()) {
-                    this.parseDir(filePath, packType);
+                    this.parseFile(path.join(dir, filename), parser);
                 }
             });
         });
@@ -37,9 +28,9 @@ class Main {
             parser = ParserFactory_1.ParserFactory.getParser(parserTypeOrIParser);
         else
             parser = parserTypeOrIParser;
-        parser.parse(filePath, this.trim);
+        parser.parse(filePath, this.trimImg);
     }
-    trim(packData) {
+    trimImg(packData) {
         let atlasPath = packData.atlasPath;
         let dir = atlasPath.substring(0, atlasPath.lastIndexOf('.'));
         if (!fs.existsSync(dir))
@@ -65,17 +56,5 @@ class Main {
     }
 }
 exports.Main = Main;
-function unpack() {
-    let argv = process.argv.slice(2);
-    if (argv.length < 2) {
-        help();
-        return;
-    }
-    new Main(argv[0], argv[1]);
-}
-exports.unpack = unpack;
-function help() {
-    console.log(`you have to provide 2 arguments, the first arg is director or file,
-    and the second arg is packType.\ncommand like:\nun dir cc \nun file.plist cc`);
-}
-//# sourceMappingURL=main.js.map
+new Main(path.resolve("test", "ui"), "cc");
+//# sourceMappingURL=unpack.js.map

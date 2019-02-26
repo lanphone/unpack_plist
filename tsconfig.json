@@ -1,13 +1,14 @@
 {
 	"compilerOptions": {
 		"target": "es6",
-		"module": "umd",
+		"module": "commonjs",
 		"watch": true,
 		"sourceMap": true,
 		"outDir": "./out"
 	},
 	"exclude": [
 		"node_modules",
-		"out"
+		"out",
+		"test"
 	]
 }

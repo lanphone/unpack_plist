@@ -7,23 +7,30 @@ import { parserCfg } from './config/parserCfg';
 
 export class Main {
 
-    constructor(a, b) {
-        this.parseDir(a, b); 
-
+    constructor(filename: string, packType: string) {
+        if (fs.statSync(filename).isDirectory())
+            this.parseDir(filename, packType);
+        else
+            this.parseFile(filename, packType);
     }
 
 
-    parseDir(dir: string, parserType: string) {
-        let { ext } = parserCfg[parserType];
-        let parser: IParser = ParserFactory.getParser(parserType);
+    parseDir(dir: string, packType: string) {
+        let { ext } = parserCfg[packType];
+        let parser: IParser = ParserFactory.getParser(packType);
         fs.readdir(dir, (err, files) => {
-            if (err)
-                throw err;
-            files.forEach((filename) => {
-                if (filename.match(ext)) {
-                    this.parseFile(path.join(dir, filename), parser);
-                }
-            });
+            if (err) {
+                console.error(err);
+            } else {
+                files.forEach((filename) => {
+                    let filePath = path.join(dir, filename);
+                    if (filename.match(ext)) {
+                        this.parseFile(filePath, parser);
+                    } else if (fs.statSync(filePath).isDirectory()) {
+                        this.parseDir(filePath, packType);
+                    }
+                });
+            }
         });
     }
 
@@ -34,12 +41,12 @@ export class Main {
         else
             parser = parserTypeOrIParser;
 
-        parser.parse(filePath, this.trimImg);
+        parser.parse(filePath, this.trim);
     }
 
 
 
-    trimImg(packData: IPackData) {
+    trim(packData: IPackData) {
         let atlasPath = packData.atlasPath;
         let dir = atlasPath.substring(0, atlasPath.lastIndexOf('.'))
         if (!fs.existsSync(dir))
@@ -66,5 +73,17 @@ export class Main {
     }
 }
 
+export function unpack() {
+    let argv = process.argv.slice(2);
+    if (argv.length < 2) {
+        help();
+        return;
+    }
+    new Main(argv[0], argv[1]);
+}
 
-new Main("/Users/xqq/mine/nodejs/workspace/unpack_texturepacker/test/ui", "cc");
+function help() {
+    console.log(`you have to provide 2 arguments, the first arg is director or file,
+    and the second arg is packType.\ncommand like:\nun dir cc \nun file.plist cc`)
+
+}
