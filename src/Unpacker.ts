@@ -7,11 +7,11 @@ import { parserCfg } from './config/parserCfg';
 
 export class Unpacker {
 
-    constructor(filename: string, packType: string) {
-        if (fs.statSync(filename).isDirectory())
-            this.parseDir(filename, packType);
+    constructor(fileOrDir: string, packType: string) {
+        if (fs.statSync(fileOrDir).isDirectory())
+            this.parseDir(fileOrDir, packType);
         else
-            this.parseFile(filename, packType);
+            this.parseFile(fileOrDir, packType);
     }
 
 
@@ -34,15 +34,19 @@ export class Unpacker {
         });
     }
 
-    parseFile(filePath: string, parserTypeOrIParser: string | IParser) {
+    async parseFile(filePath: string, parserTypeOrIParser: string | IParser) {
         let parser: IParser;
         if (typeof parserTypeOrIParser === "string")
             parser = ParserFactory.getParser(parserTypeOrIParser);
         else
             parser = parserTypeOrIParser;
 
-        parser.parse(filePath, (err: Error, trimData: ITrimData) => !err && trimData && this.trim(trimData));
-
+        try {
+            let data = await parser.parse(filePath);
+            this.trim(data);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
 
@@ -74,8 +78,25 @@ export class Unpacker {
     }
 }
 
-export function unpack(filename: string, packType: string) {
-    new Unpacker(filename, packType);
+//---------------------
+
+/**
+ * 解包图集，裁剪还原小图片
+ * @param fileOrDir 配置文件绝对路径或文件目录（允许目录嵌套），支持批量处理
+ * @param packType 文件类型，非文件后缀，仅提供了cocos支持，类型为 "cc"，可通过实现 IParser 接口扩展更多类型
+ */
+export function unpack(fileOrDir: string, packType: string) {
+    new Unpacker(fileOrDir, packType);
+}
+
+/**
+ * 注册自定义解析器
+ * @param type string类型
+ * @param parserCls 实现了IParser接口的类
+ * @param ext 文件扩展名 (".plist")
+ */
+export function registerParser(type: string, parserCls: any, ext:string) {
+    parserCfg[type] = { parser: parserCls, ext: ext };
 }
 
 //-------check binding.node------
@@ -84,7 +105,9 @@ var child_process = require('child_process');
 
 (() => {
     if (!fs.existsSync(path.resolve("node_modules", "images", "build"))) {
-        child_process.spawn('cp', ['-r', path.resolve("build"), path.resolve("node_modules", "images")]);
-        console.log("has copied binding.node to node_modules/images! if run error, please upgrade nodejs to lastest!")
+        let dest = path.resolve("node_modules", "images");
+        child_process.spawn('cp', ['-r', path.resolve("build"), dest]);
+        
+        console.log(`has copied binding.node to ${path.resolve(dest, 'build')}! if run error, please upgrade nodejs to lastest!`)
     }
 })()

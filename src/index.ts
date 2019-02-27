@@ -1,4 +1,5 @@
-import { unpack } from "./Unpacker";
+#!/usr/bin/env node
+import * as unpacker  from "./Unpacker";
 
 (() => {
     let argv = process.argv.slice(2);
@@ -6,10 +7,14 @@ import { unpack } from "./Unpacker";
         help();
         return;
     }
-    unpack(argv[0], argv[1]);
+    unpacker.unpack(argv[0], argv[1]);
 })()
 
 function help() {
-    console.log(`you have to provide 2 arguments, the first arg is director or file,
-and the second arg is packType(exp:cocos type is cc).\n command line like:\n un dir cc \n un file.plist cc`);
+    console.log(`you have to provide 2 arguments, the first arg is director or file,and the second arg is packType(exp:cocos type is cc).
+    
+    command line like:
+      un dir cc 
+      un file.plist cc
+     `);
 }

@@ -1,22 +1,20 @@
-import { IParser, ITrimData, ITrimItemData } from "../core/IParser";
-import { Utils } from "../core/utils";
-import xml2js = require('xml2js');
-import fs = require('fs');
-
-export class CocosParser implements IParser {
-    
-    parse(configFilePath: string): Promise<ITrimData> {
-        return new Promise<ITrimData>((resolve, reject) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("./core/utils");
+const xml2js = require("xml2js");
+const fs = require("fs");
+class CCParser {
+    parse(configFilePath) {
+        return new Promise((resolve, reject) => {
             fs.readFile(configFilePath, "utf-8", (err, data) => {
                 if (err) {
                     console.error(`errorFile:${configFilePath}`);
                     reject(err);
                     return;
                 }
-                let plistData: ITrimData = { atlasPath: "", itemDatas: [] };
+                let plistData = { atlasPath: "", itemDatas: [] };
                 let path = configFilePath.replace(".plist", "");
                 plistData.atlasPath = `${path}.png`;
-
                 xml2js.parseString(data, { explicitArray: false }, (err, json) => {
                     if (err) {
                         console.error(`errorFile:${configFilePath}`);
@@ -26,7 +24,7 @@ export class CocosParser implements IParser {
                     let content = json.plist.dict.dict[0];
                     let frames = content.dict;
                     let names = content.key;
-                    let n, item: ITrimItemData, arr, s: string, frame, key;
+                    let n, item, arr, s, frame, key;
                     for (let i = 0; i < names.length; i++) {
                         plistData.itemDatas[i] = item = { name: names[i], rotated: false, degree: 0, frame: null, sourceColorRect: null, sourceSize: null };
                         let frame = frames[i];
@@ -44,17 +42,17 @@ export class CocosParser implements IParser {
                             arr = s.replace(/\{|\}/g, "").split(",");
                             switch (key) {
                                 case "frame":
-                                    Utils.strArr2NumArr(arr);
+                                    utils_1.Utils.strArr2NumArr(arr);
                                     item.frame = arr;
                                     break;
                                 case "offset":
                                     break;
                                 case "sourceColorRect":
-                                    Utils.strArr2NumArr(arr);
+                                    utils_1.Utils.strArr2NumArr(arr);
                                     item.sourceColorRect = arr;
                                     break;
                                 case "sourceSize":
-                                    Utils.strArr2NumArr(arr);
+                                    utils_1.Utils.strArr2NumArr(arr);
                                     item.sourceSize = arr;
                                     break;
                             }
@@ -72,3 +70,5 @@ export class CocosParser implements IParser {
         });
     }
 }
+exports.CCParser = CCParser;
+//# sourceMappingURL=CCParser.js.map
