@@ -1,35 +1,35 @@
-import { IParser, IPackData, ITrimData } from "../core/IParser";
+import { IParser, ITrimData, ITrimItemData } from "../core/IParser";
 import { Utils } from "../core/utils";
 import xml2js = require('xml2js');
 import fs = require('fs');
 
 export class CocosParser implements IParser {
 
-    parse(plistFile: string, callback: (err: Error, plistData: IPackData) => void) {
-        fs.readFile(plistFile, "utf-8", (err, data) => {
+    parse(configFilePath: string, callback: (err: Error, trimData: ITrimData) => void) {
+        fs.readFile(configFilePath, "utf-8", (err, data) => {
             if (err) {
                 console.error(err);
-                console.error(`targetFile:${plistFile}`);
+                console.error(`targetFile:${configFilePath}`);
                 callback.call(this, err, null);
                 return;
             }
-            let plistData: IPackData = { atlasPath: "", trimDatas: [] };
-            let path = plistFile.replace(".plist", "");
+            let plistData: ITrimData = { atlasPath: "", itemDatas: [] };
+            let path = configFilePath.replace(".plist", "");
             plistData.atlasPath = `${path}.png`;
 
             xml2js.parseString(data, { explicitArray: false }, (err, json) => {
                 if (err) {
                     console.error(err);
-                    console.error(`targetFile:${plistFile}`);
+                    console.error(`targetFile:${configFilePath}`);
                     callback.call(this, err, null);
                     return;
                 }
                 let content = json.plist.dict.dict[0];
                 let frames = content.dict;
                 let names = content.key;
-                let n, item: ITrimData, arr, s: string, frame, key;
+                let n, item: ITrimItemData, arr, s: string, frame, key;
                 for (let i = 0; i < names.length; i++) {
-                    plistData.trimDatas[i] = item = { name: names[i], rotated: false, degree: 0, frame: null, sourceColorRect: null, sourceSize: null };
+                    plistData.itemDatas[i] = item = { name: names[i], rotated: false, degree: 0, frame: null, sourceColorRect: null, sourceSize: null };
                     let frame = frames[i];
                     let keys = frame.key;
                     let strings = frame.string;

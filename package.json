@@ -11,9 +11,9 @@
   "scripts": {
     "test": "node ./test/test.js"
   },
-  "main": "./out/index.js",
+  "main": "./out/Unpacker.js",
   "bin": {
-    "unp": "./bin/index.js"
+    "un": "./bin/index.js"
   },
   "dependencies": {
     "images": "^3.0.2",

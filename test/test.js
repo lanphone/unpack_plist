@@ -1,3 +1,3 @@
-var Unpacker = require("../out/unpacker").Unpacker;
+var unpacker = require("..");
 var path = require('path');
-new Unpacker(path.resolve("test", "ui"), "cc");
+unpacker.unpack(path.resolve("test", "ui"), "cc");

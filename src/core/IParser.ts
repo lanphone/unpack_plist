@@ -1,8 +1,8 @@
 export interface IParser {
-    parse(plistFile: string, callback: (err:Error, packData: IPackData) => void),
+    parse(configFilePath: string, callback: (err:Error, trimData: ITrimData) => void),
 }
 
-export interface ITrimData {
+export interface ITrimItemData {
     name: string,
     rotated: boolean,
     degree: number,
@@ -11,7 +11,7 @@ export interface ITrimData {
     sourceSize: number[]
 }
 
-export interface IPackData {
+export interface ITrimData {
     atlasPath: string,
-    trimDatas: ITrimData[]
+    itemDatas: ITrimItemData[]
 }

@@ -4,21 +4,21 @@ const utils_1 = require("../core/utils");
 const xml2js = require("xml2js");
 const fs = require("fs");
 class CocosParser {
-    parse(plistFile, callback) {
-        fs.readFile(plistFile, "utf-8", (err, data) => {
+    parse(configFilePath, callback) {
+        fs.readFile(configFilePath, "utf-8", (err, data) => {
             if (err) {
                 console.error(err);
-                console.error(`targetFile:${plistFile}`);
+                console.error(`targetFile:${configFilePath}`);
                 callback.call(this, err, null);
                 return;
             }
-            let plistData = { atlasPath: "", trimDatas: [] };
-            let path = plistFile.replace(".plist", "");
+            let plistData = { atlasPath: "", itemDatas: [] };
+            let path = configFilePath.replace(".plist", "");
             plistData.atlasPath = `${path}.png`;
             xml2js.parseString(data, { explicitArray: false }, (err, json) => {
                 if (err) {
                     console.error(err);
-                    console.error(`targetFile:${plistFile}`);
+                    console.error(`targetFile:${configFilePath}`);
                     callback.call(this, err, null);
                     return;
                 }
@@ -27,7 +27,7 @@ class CocosParser {
                 let names = content.key;
                 let n, item, arr, s, frame, key;
                 for (let i = 0; i < names.length; i++) {
-                    plistData.trimDatas[i] = item = { name: names[i], rotated: false, degree: 0, frame: null, sourceColorRect: null, sourceSize: null };
+                    plistData.itemDatas[i] = item = { name: names[i], rotated: false, degree: 0, frame: null, sourceColorRect: null, sourceSize: null };
                     let frame = frames[i];
                     let keys = frame.key;
                     let strings = frame.string;

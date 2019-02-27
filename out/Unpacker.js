@@ -38,17 +38,17 @@ class Unpacker {
             parser = ParserFactory_1.ParserFactory.getParser(parserTypeOrIParser);
         else
             parser = parserTypeOrIParser;
-        parser.parse(filePath, (err, packData) => !err && packData && this.trim(packData));
+        parser.parse(filePath, (err, trimData) => !err && trimData && this.trim(trimData));
     }
-    trim(packData) {
-        let atlasPath = packData.atlasPath;
+    trim(trimData) {
+        let atlasPath = trimData.atlasPath;
         let dir = atlasPath.substring(0, atlasPath.lastIndexOf('.'));
         if (!fs.existsSync(dir))
             fs.mkdirSync(dir);
         let atlas = images(atlasPath);
         let item, sImg;
-        for (let i = 0; i < packData.trimDatas.length; i++) {
-            item = packData.trimDatas[i];
+        for (let i = 0; i < trimData.itemDatas.length; i++) {
+            item = trimData.itemDatas[i];
             let arr = item.frame;
             let img = images(atlas, arr[0], arr[1], arr[2], arr[3]);
             if (item.rotated)
@@ -66,4 +66,16 @@ class Unpacker {
     }
 }
 exports.Unpacker = Unpacker;
+function unpack(filename, packType) {
+    new Unpacker(filename, packType);
+}
+exports.unpack = unpack;
+//-------check binding.node------
+var child_process = require('child_process');
+(() => {
+    if (!fs.existsSync(path.resolve("node_modules", "images", "build"))) {
+        child_process.spawn('cp', ['-r', path.resolve("build"), path.resolve("node_modules", "images")]);
+        console.log("has copied binding.node to node_modules/images! if run error, please upgrade nodejs to lastest!");
+    }
+})();
 //# sourceMappingURL=Unpacker.js.map
