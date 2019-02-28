@@ -4,13 +4,18 @@
 
 把texturepacker 生成的图集，重新提取还原成多张小图
 
+## 安装：
+
+```javascript
+$ npm install unpack_tp
+```
 ## 用法命令：
 
 un 目录或数据文件 文件生成类型（比如cocos就是cc）
 
 un dir(file) type
 
-## 方法：
+## API：
 
 ```javascript
 /**
