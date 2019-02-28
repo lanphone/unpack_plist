@@ -27,15 +27,14 @@ un dir(file) type
  * @param ext 文件扩展名 (".plist")
  */
 function registerParser(type: string, parserCls: any, ext:string)
+
 ```
 
 ## 编程式调用：
 
 ```javascript
 var unpacker = require("Unpacker");
-
 var path = require('path');
-
 unpacker.unpack(path.resolve("test", "ui"), "cc");
 ```
 
@@ -59,6 +58,22 @@ export interface IParser {
      * @param configFilePath 
      */
     parse(configFilePath: string): Promise<ITrimData>
+}
+
+/**
+ * 图集的裁剪数据
+ */
+export interface ITrimData {
+
+    /**
+     * 图集的绝对路径
+     */
+    atlasPath: string,
+
+    /**
+     * 裁剪数据数组
+     */
+    itemDatas: ITrimItemData[]
 }
 
 /**
@@ -99,23 +114,7 @@ export interface ITrimItemData {
     sourceSize: number[]
 }
 
-/**
- * 图集的裁剪数据
- */
-export interface ITrimData {
-
-    /**
-     * 图集的绝对路径
-     */
-    atlasPath: string,
-
-    /**
-     * 裁剪数据数组
-     */
-    itemDatas: ITrimItemData[]
-}
 ```
 
 注：需要使用build下的binding.node才能正确裁剪图片，images附带的有问题，第一次运行会自动复制到node_modules/images目录下，无需另外手动操作，
-
-如果运行时有问题，请把nodejs升级到最新版本，作者开发时用的是11.10.0
+images修复后会移除这个步骤，如果运行时有问题，请把nodejs升级到最新版本，作者开发时用的是11.10.0

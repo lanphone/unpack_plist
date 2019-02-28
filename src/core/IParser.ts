@@ -10,6 +10,22 @@ export interface IParser {
 }
 
 /**
+ * 图集的裁剪数据
+ */
+export interface ITrimData {
+
+    /**
+     * 图集的绝对路径
+     */
+    atlasPath: string,
+
+    /**
+     * 裁剪数据数组
+     */
+    itemDatas: ITrimItemData[]
+}
+
+/**
  * 裁剪单张图片的所需要数据
  */
 export interface ITrimItemData {
@@ -45,20 +61,4 @@ export interface ITrimItemData {
      * [w, h]
      */
     sourceSize: number[]
-}
-
-/**
- * 图集的裁剪数据
- */
-export interface ITrimData {
-
-    /**
-     * 图集的绝对路径
-     */
-    atlasPath: string,
-
-    /**
-     * 裁剪数据数组
-     */
-    itemDatas: ITrimItemData[]
 }
