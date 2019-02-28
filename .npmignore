@@ -1,0 +1,9 @@
+/node_modules/
+/test/ui/loading/
+/test/ui/elem/
+*.js.map
+/src/
+/test/
+/.vscode/
+npmPrepublish.js
+tsconfig.json

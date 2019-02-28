@@ -1,6 +1,6 @@
 {
   "name": "unpack_tp",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "unpack spritesheet for texturepacker",
   "author": "lanphone <lanphone@yeah.net>",
   "license": "MIT",
@@ -9,11 +9,12 @@
     "url": "https://github.com/lanphone/unpack_tp.git"
   },
   "scripts": {
-    "test": "node ./test/test.js"
+    "test": "node ./test/test.js",
+    "prepublish": "node ./npmPrepublish.js"
   },
-  "main": "./bin/Unpacker.js",
+  "main": "./lib/Unpacker.js",
   "bin": {
-    "un": "./bin/index.js"
+    "un": "./lib/index.js"
   },
   "dependencies": {
     "images": "^3.0.2",

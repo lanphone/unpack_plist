@@ -4,11 +4,11 @@
 		"module": "commonjs",
 		"watch": true,
 		"sourceMap": true,
-		"outDir": "./bin"
+		"outDir": "./lib"
 	},
 	"exclude": [
 		"node_modules",
-		"bin",
+		"lib",
 		"test"
 	]
 }
