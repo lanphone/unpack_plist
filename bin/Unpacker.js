@@ -102,12 +102,13 @@ function registerParser(type, parserCls, ext) {
     parserCfg_1.parserCfg[type] = { parser: parserCls, ext: ext };
 }
 exports.registerParser = registerParser;
+exports.unpack_tp_root = path.resolve(__dirname, "..");
 //-------check binding.node------
 var child_process = require('child_process');
 (() => {
-    if (!fs.existsSync(path.resolve("node_modules", "images", "build"))) {
-        let dest = path.resolve("node_modules", "images");
-        child_process.spawn('cp', ['-r', path.resolve("build"), dest]);
+    if (!fs.existsSync(path.resolve(exports.unpack_tp_root, "node_modules", "images", "build"))) {
+        let dest = path.resolve(exports.unpack_tp_root, "node_modules", "images");
+        child_process.spawn('cp', ['-r', path.resolve(exports.unpack_tp_root, "lib", "build"), dest]);
         console.log(`has copied binding.node to ${path.resolve(dest, 'build')}! if run error, please upgrade nodejs to lastest!`);
     }
 })();
