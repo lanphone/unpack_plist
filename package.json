@@ -1,6 +1,6 @@
 {
   "name": "unpack_tp",
-  "version": "0.0.3",
+  "version": "0.0.19",
   "description": "unpack spritesheet for texturepacker",
   "author": "lanphone <lanphone@yeah.net>",
   "license": "MIT",

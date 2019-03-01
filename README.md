@@ -11,9 +11,11 @@ $ npm install unpack_tp
 ```
 ## 用法命令：
 
-un 目录或数据文件 文件生成类型（比如cocos就是cc）
-
 un dir(file) type
+
+dir(file):目录或数据文件
+
+type:文件生成类型（比如cocos就是cc）
 
 ## API：
 
@@ -38,7 +40,7 @@ function registerParser(type: string, parserCls: any, ext:string)
 ## 编程式调用：
 
 ```javascript
-var unpacker = require("Unpacker");
+var unpacker = require("unpack_tp");
 var path = require('path');
 unpacker.unpack(path.resolve("test", "ui"), "cc");
 ```
@@ -48,7 +50,7 @@ unpacker.unpack(path.resolve("test", "ui"), "cc");
 目前仅支持cocos 的plist导出，实现IParser接口可增加支持更多类型
 
 ```javascript
-var unpacker = require("Unpacker");
+var unpacker = require("unpack_tp");
 unpacker.registerParser(IParserCls, "unity");
 unpacker.unpack(path.resolve("test", "ui"), "unity");
 ```
@@ -121,5 +123,5 @@ export interface ITrimItemData {
 
 ```
 
-注：需要使用build下的binding.node才能正确裁剪图片，images附带的有问题，第一次运行会自动复制到node_modules/images目录下，无需另外手动操作，
-images修复后会移除这个步骤，如果运行时有问题，请把nodejs升级到最新版本，作者开发时用的是11.10.0
+注：需要使用build下的binding.node才能正确裁剪图片，images附带的有问题，第一次运行会自动复制到node_modules/images目录下，
+如果不能成功复制文件，需要手动进行操作，images修复后会移除这个步骤，如果运行时有问题，请把nodejs升级到最新版本，作者开发时用的是11.10.0

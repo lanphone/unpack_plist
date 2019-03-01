@@ -1,6 +1,41 @@
-import images = require('images');
 import fs = require('fs');
 import path = require('path');
+//-------check binding.node------
+
+var child_process = require('child_process');
+
+(() => {
+    let curPath = path.resolve(__dirname);
+    let imagesPath = path.resolve(curPath, "..", "..", "images");//本地安装
+    if (!fs.existsSync(imagesPath)){
+        imagesPath = path.resolve(curPath, "..", "node_modules", "images");//全局安装
+    }
+    let imagesBuild = path.resolve(imagesPath, "build");
+    if (!fs.existsSync(imagesBuild)) {
+        let src = path.resolve(curPath, "binding.node");
+        let dest = path.resolve(imagesBuild, "Release");
+        try {
+            fs.mkdirSync(imagesBuild);
+            fs.mkdirSync(dest);
+            fs.copyFileSync(src, path.resolve(dest, "binding.node"));
+            console.log(`copied binding.node success.
+                from ${src} 
+                to ${dest}! 
+                If run error, please upgrade nodejs to lastest!
+            `);
+        }
+        catch (e) {
+            console.log(e);
+            console.log(`\n\n warm:copy binding.node faild! you have to copy the file \n ${src} to \n ${dest}\n\n`);
+        }
+
+    }
+})()
+
+//-------------------
+
+
+import images = require('images');
 import { ITrimData, ITrimItemData, IParser } from './core/IParser';
 import { ParserFactory } from './core/ParserFactory';
 import { parserCfg } from './config/parserCfg';
@@ -95,20 +130,8 @@ export function unpack(fileOrDir: string, packType: string) {
  * @param parserCls 实现了IParser接口的类
  * @param ext 文件扩展名 (".plist")
  */
-export function registerParser(type: string, parserCls: any, ext:string) {
+export function registerParser(type: string, parserCls: any, ext: string) {
     parserCfg[type] = { parser: parserCls, ext: ext };
 }
 
-export let unpack_tp_root:string = path.resolve(__dirname, "..");
 
-//-------check binding.node------
-
-var child_process = require('child_process');
-
-(() => {
-    if (!fs.existsSync(path.resolve(unpack_tp_root, "node_modules", "images", "build"))) {
-        let dest = path.resolve(unpack_tp_root, "node_modules", "images");
-        child_process.spawn('cp', ['-r', path.resolve(unpack_tp_root, "lib", "build"), dest]);        
-        console.log(`has copied binding.node to ${path.resolve(dest, 'build')}! if run error, please upgrade nodejs to lastest!\n`)
-    }
-})()
